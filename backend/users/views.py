@@ -15,7 +15,7 @@ class CustomUserViewSet(UserViewSet):
 
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     # cust
 
 
@@ -26,7 +26,7 @@ class FollowViewSet(APIView):
     """
 
     serializer_class = FollowSerializer
-    permission_classes = (permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated,)
     pagination_class = BackendPagination
 
     def post(self, request, *args, **kwargs):
@@ -76,8 +76,8 @@ class FollowListView(ListAPIView):
     """APIView подписок."""
 
     serializer_class = FollowSerializer
-    permission_classes = (permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated,)
     pagination_class = BackendPagination
 
     def get_queryset(self):
-        return User.objects.filter(following_user=self.request.user)  # __
+        return User.objects.filter(following__user=self.request.user)  # __

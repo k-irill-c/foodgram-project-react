@@ -32,7 +32,7 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     """ViewSet работы с ингредиентами."""
 
     queryset = Ingredient.objects.all()
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     serializer_class = IngredientSerializer
     filter_backends = (IngredientSearchFilter,)
     search_fields = ('^name',)
