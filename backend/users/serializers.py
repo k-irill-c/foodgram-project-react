@@ -42,9 +42,9 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             'username',
             'first_name',
             'last_name',
-            'is_subscribed'
+            'password'
         )
-        # extra_kwargs = {'password': {'write_only': True}}..
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class RecipeShortSerializer(serializers.ModelSerializer):
@@ -71,7 +71,7 @@ class FollowSerializer(CustomUserSerializer):
             'username',
             'first_name',
             'last_name',
-            'is_subscribed'
+            'is_subscribed',
             'recipes',
             'recipes_count'
         )

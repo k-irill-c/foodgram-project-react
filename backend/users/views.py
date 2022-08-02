@@ -9,6 +9,7 @@ from .pagination import BackendPagination
 from .models import Follow, User
 from .serializers import CustomUserSerializer, FollowSerializer
 # from ..api import permissions (cust)
+from .serializers import CustomUserCreateSerializer
 
 class CustomUserViewSet(UserViewSet):
     """ViewSet пользовательский."""
@@ -18,6 +19,12 @@ class CustomUserViewSet(UserViewSet):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     # cust
 
+class CustomUserViewSet(UserViewSet):
+    """ViewSet пользовательский создание."""
+
+    queryset = User.objects.all()
+    serializer_class = CustomUserCreateSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class FollowViewSet(APIView):

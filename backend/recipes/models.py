@@ -61,7 +61,7 @@ class Tag(models.Model):
         choices=CHOICES,
         verbose_name='Цвет по HEX-коду',
     )
-    #  slug = models.SlugField(max_length=200, unique=True, verbose_name='Уникальный слаг')  #-
+    slug = models.SlugField(max_length=200, unique=True, default='obed', verbose_name='Уникальный слаг')  #-
 
     class Meta:
         ordering = ('-id',)

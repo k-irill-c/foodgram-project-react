@@ -3,8 +3,7 @@ version: '3.3'
 services:
   db:
     image: postgres:13.0-alpine
-    #ports:
-      #- "5432:5432"
+
     volumes:
       - db:/var/lib/postgresql/data/
     #environment:
@@ -40,12 +39,11 @@ services:
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
       - backend_static:/usr/share/nginx/html/backend_static/:ro
-      - backend_media:/usr/share/nginx/html/backend_media/:ro
+      - media_value:/usr/share/nginx/html/backend_media/:ro
 
 
 volumes:
   db:
   backend_static:
   backend_media:
-
 

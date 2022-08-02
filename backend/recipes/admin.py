@@ -28,7 +28,7 @@ class IngredientAmountAdmin(admin.ModelAdmin):
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color')
+    list_display = ('name', 'color', 'slug')
     list_filter = ('color',)
     empty_value_display = '-пусто-'
 
