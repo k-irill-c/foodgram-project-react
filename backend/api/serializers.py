@@ -139,10 +139,10 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
     def validate(self, data):
         ingredients = data['ingredients']
         ingredients_list = []
-        if not ingredients:
-            raise serializers.ValidationError(
-                {'ingredients': 'Должен быть хотя бы один ингредиент!'}
-            )
+#        if not ingredients:
+#            raise serializers.ValidationError(
+#                {'ingredients': 'Должен быть хотя бы один ингредиент!'}
+#            )
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:
@@ -176,7 +176,7 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
             )
         return data
 
-    # @staticmethod
+    @staticmethod
     def create_ingredients(ingredients, recipe):
         for ingredient in ingredients:
             IngredientAmount.objects.create(
@@ -184,7 +184,7 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
                 amount=ingredient['amount']
             )
 
-    # @staticmethod
+    @staticmethod
     def create_tags(tags, recipe):
         for tag in tags:
             recipe.tags.add(tag)

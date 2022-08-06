@@ -27,6 +27,7 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT', default='5432'),
     }
 }
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #DATABASES = {
 #    'default': {
@@ -154,7 +155,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
+#        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly', 
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -187,9 +189,13 @@ DJOSER = {
         'user_create': 'users.serializers.CustomUserCreateSerializer',
     },
     'PERMISSIONS': {
-        'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
-        'user_list': [
-            'rest_framework.permissions.IsAuthenticatedOrReadOnly'], }
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.AllowAny']
+    },
+#    'PERMISSIONS': {
+#        'user': ['rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+#        'user_list': [
+#            'rest_framework.permissions.IsAuthenticatedOrReadOnly'], },
 }
 
 
