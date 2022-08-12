@@ -46,7 +46,7 @@ SECRET_KEY = '2s13loaf&fr&e64scie^bhbrtxpc2@xb8vj1pdjxge26%8r=)t'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'yapracticscool.sytes.net',
+#    'yapracticscool.sytes.net',
     '51.250.91.241',
     'localhost',
     '127.0.0.1',
