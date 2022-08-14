@@ -32,19 +32,22 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     """ViewSet работы с ингредиентами."""
 
     queryset = Ingredient.objects.all()
-    permission_classes = (AllowAny,)
+###    permission_classes = (AllowAny,)
+    permission_classes = (OwOrReadOnly,)
+    filter_backends = [IngredientSearchFilter]
     serializer_class = IngredientSerializer
-    filter_backends = (IngredientSearchFilter,)
     search_fields = ('^name',)
     pagination_class = None
+    #filter_backends = [DjangoFilterBackend]
+    #filterset_class = IngredientSearchFilter
 
 class RecipeViewSet(ModelViewSet):
     """ViewSet для работы с рецептами."""
 
     queryset = Recipe.objects.all()
-#    permission_classes = (OwOrReadOnly,)
-    permission_classes = (AllowAny,)
-    filter_backends = (DjangoFilterBackend,)
+    permission_classes = (OwOrReadOnly,)
+##    permission_classes = (AllowAny,)
+    filter_backends = [DjangoFilterBackend]
     filterset_class = RecipeFilter
     pagination_class = BackendPagination
 

@@ -12,7 +12,7 @@ class Command(BaseCommand):
             return
         print('Loading ingredients...')
         for row in DictReader(open(
-                './backend_static/data/ingredients.csv', encoding='utf-8')):
+                './backend_static/data/ingredients.json', encoding='utf-8')):
             ingredient = Ingredient(
                 name=row['name'],
                 measurement_unit=row['measurement_unit'],
