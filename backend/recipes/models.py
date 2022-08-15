@@ -1,6 +1,5 @@
 from django.core.validators import MinValueValidator
 from django.db import models
-
 from users.models import User
 
 
@@ -61,7 +60,11 @@ class Tag(models.Model):
         choices=CHOICES,
         verbose_name='Цвет по HEX-коду',
     )
-    slug = models.SlugField(max_length=200, unique=True, verbose_name='Уникальный слаг')  #-
+    slug = models.SlugField(
+        max_length=200,
+        unique=True,
+        verbose_name='Уникальный слаг'
+    )
 
     class Meta:
         ordering = ('-id',)
@@ -145,7 +148,7 @@ class IngredientAmount(models.Model):
         'Количество ингредиентов',
         validators=(
             MinValueValidator(
-                1, message='Минимальное количество ингридиентов: 1'
+                1, message='Минимальное количество ингридиентов: 2'
             ),
         ),
     )

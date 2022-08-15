@@ -1,15 +1,14 @@
 from djoser.views import UserViewSet
-from rest_framework import status
+from rest_framework import permissions, status
 from rest_framework.generics import ListAPIView, get_object_or_404
-from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .pagination import BackendPagination
 from .models import Follow, User
-from .serializers import CustomUserSerializer, FollowSerializer
-# from ..api import permissions (cust)
-from .serializers import CustomUserCreateSerializer
+from .pagination import BackendPagination
+from .serializers import (CustomUserCreateSerializer, CustomUserSerializer,
+                          FollowSerializer)
+
 
 class CustomUserViewSet(UserViewSet):
     """ViewSet пользовательский."""
@@ -17,10 +16,10 @@ class CustomUserViewSet(UserViewSet):
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    # cust
 
-class CustomUserViewSet(UserViewSet):
-    """ViewSet пользовательский создание."""
+
+class CustomUserCreateViewSet(UserViewSet):
+    """ViewSet пользовательский: создание."""
 
     queryset = User.objects.all()
     serializer_class = CustomUserCreateSerializer
@@ -48,7 +47,7 @@ class FollowViewSet(APIView):
                 following_id=user_id
         ).exists():
             return Response(
-                {'error': 'Подписка на автора уже есть'},
+                {'error': 'Подписка на автора уже есть!'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         following = get_object_or_404(User, id=user_id)
@@ -87,4 +86,4 @@ class FollowListView(ListAPIView):
     pagination_class = BackendPagination
 
     def get_queryset(self):
-        return User.objects.filter(following__user=self.request.user)  # __
+        return User.objects.filter(following__user=self.request.user)

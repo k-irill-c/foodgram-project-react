@@ -1,8 +1,7 @@
 from django.contrib import admin
 
-from .models import Favorite, Ingredient, IngredientAmount, Recipe, ShoppingCart, Tag
-
-# from rest_framework.decorators import staticmethod
+from .models import (Favorite, Ingredient, IngredientAmount, Recipe,
+                     ShoppingCart, Tag)
 
 
 class RecipeAdmin(admin.ModelAdmin):

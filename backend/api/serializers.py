@@ -1,11 +1,8 @@
-# from builtins import Exception, ValueError
 import webcolors
 from drf_extra_fields.fields import Base64ImageField
-
-from rest_framework import serializers
-
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
+from rest_framework import serializers
 from users.serializers import CustomUserSerializer
 
 
@@ -30,7 +27,7 @@ class TagSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tag
-        fields = ('id', 'name', 'color','slug')
+        fields = ('id', 'name', 'color', 'slug')
         read_only_fields = '__all__',
 
 
@@ -44,9 +41,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class IngredientAmountSerializer(serializers.ModelSerializer):
-    """
-    Сериализатор вывода количества ингредиентов.
-    """
+    """Сериализатор вывода количества ингредиентов."""
 
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
@@ -119,7 +114,6 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
         queryset=Tag.objects.all(), many=True
     )
     ingredients = IngredientAppendSerializer(many=True)
-    # ingredients = IngredientAppendSerializer(read_only=True, many=True, source='recipes_ingredients')
     author = CustomUserSerializer(read_only=True)
     image = Base64ImageField()
 
@@ -139,10 +133,6 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
     def validate(self, data):
         ingredients = data['ingredients']
         ingredients_list = []
-#        if not ingredients:
-#            raise serializers.ValidationError(
-#                {'ingredients': 'Должен быть хотя бы один ингредиент!'}
-#            )
         for ingredient in ingredients:
             ingredient_id = ingredient['id']
             if ingredient_id in ingredients_list:

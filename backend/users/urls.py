@@ -18,9 +18,6 @@ urlpatterns = [
         name='subscriptions'
     ),
     path('', include(router.urls)),
-    #path('', include('djoser.urls')),
     path('', include('djoser.urls')),
-    #path('auth/', include('djoser.urls.jwt')),  #auth/
-    # path('', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
 ]

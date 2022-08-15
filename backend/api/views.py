@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
+                            ShoppingCart, Tag)
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -9,14 +11,12 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-
-from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
-                            ShoppingCart, Tag)
-from .filters import IngredientSearchFilter, RecipeFilter
 from users.pagination import BackendPagination
+
+from .filters import IngredientSearchFilter, RecipeFilter
 from .permissions import OwOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
-                          RecipeListSerializer, RecipeAppendSerializer,
+                          RecipeAppendSerializer, RecipeListSerializer,
                           ShoppingCartSerializer, TagSerializer)
 
 
@@ -28,25 +28,24 @@ class TagsViewSet(ReadOnlyModelViewSet):
     serializer_class = TagSerializer
     pagination_class = None
 
+
 class IngredientsViewSet(ReadOnlyModelViewSet):
     """ViewSet работы с ингредиентами."""
 
     queryset = Ingredient.objects.all()
-###    permission_classes = (AllowAny,)
+
     permission_classes = (OwOrReadOnly,)
     filter_backends = [IngredientSearchFilter]
     serializer_class = IngredientSerializer
     search_fields = ('^name',)
     pagination_class = None
-    #filter_backends = [DjangoFilterBackend]
-    #filterset_class = IngredientSearchFilter
+
 
 class RecipeViewSet(ModelViewSet):
     """ViewSet для работы с рецептами."""
 
     queryset = Recipe.objects.all()
     permission_classes = (OwOrReadOnly,)
-##    permission_classes = (AllowAny,)
     filter_backends = [DjangoFilterBackend]
     filterset_class = RecipeFilter
     pagination_class = BackendPagination
@@ -87,12 +86,17 @@ class RecipeViewSet(ModelViewSet):
             permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk):
         return self.post_method_for_actions(
-            request=request, pk=pk, serializers=ShoppingCartSerializer)
+            request=request, pk=pk,
+            serializers=ShoppingCartSerializer
+        )
 
     @shopping_cart.mapping.delete
     def delete_shopping_cart(self, request, pk):
         return self.delete_method_for_actions(
-            request=request, pk=pk, model=ShoppingCart)
+            request=request,
+            pk=pk,
+            model=ShoppingCart
+        )
 
     @action(detail=False, methods=['get'],
             permission_classes=[IsAuthenticated])
@@ -132,37 +136,3 @@ class RecipeViewSet(ModelViewSet):
         page.showPage()
         page.save()
         return response
-#    @action(detail=False, permission_classes=[IsAuthenticated])
-#    def download_shopping_cart(self, request):
-#        shopping_cart = {} 
-#        ingredients = IngredientAmount.objects.filter(
-#            recipe__carts__user=request.user).values(
-#            'ingredient__name', 'ingredient__measurement_unit', 'amount'
-#        )
-#        shopping_cart = '\n'.join([
-#            f'{ingredient["ingredient__name"]} - {ingredient["amount"]} '
-#            f'{ingredient["ingredient__measurement_unit"]}'
-#            for ingredient in ingredients
-#        ])
-#        for item in ingredients:
-#            name = item[0]
-#            if name not in shopping_cart:
-#                shopping_cart[name] = {
-#                    'measurement_unit': item[1],
-#                    'amount': item[2]
-#                }
-#                shopping_list = shopping_cart[name]
-#            else:
-#                shopping_cart[name]['amount'] += item[2]
-#                shopping_list = shopping_cart[name]['amount'] 
-        #shopping_cart = '\n'.join([
-        #    f'{ingredient["ingredient__name"]} - {ingredient["amount"]} '
-        #    f'{ingredient["ingredient__measurement_unit"]}'
-        #    for ingredient in ingredients
-        #])
-
-#        filename = 'shopping_list.txt'
-#        response = HttpResponse(shopping_list, content_type='text/plain')
-#        response['Content-Disposition'] = f'attachment; filename={filename}'
-#        return response
-

@@ -4,7 +4,7 @@ from rest_framework import permissions
 class OwOrReadOnly(permissions.BasePermission):
     """
     Custom permission. Проверяет метод запроса и статус.
-    Если все ок - далее выдается объект.
+    При корректном запросе и доступности выдается объект.
     """
     def has_permission(self, request, view):
         return (

@@ -3,14 +3,13 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
-
 from recipes.models import Ingredient
 
 DATA_ROOT = os.path.join(settings.BASE_DIR, 'data')
 
 
 class Command(BaseCommand):
-    """ Добавляение ингредиентов из CSV-файла. """
+    """Добавляение ингредиентов из CSV-файла."""
 
     help = 'loading ingredients from data file json / csv'
 
@@ -30,4 +29,4 @@ class Command(BaseCommand):
                         measurement_unit=measurement_unit
                     )
         except FileNotFoundError:
-            raise CommandError('Добавьте файл ingredients json / csv  в директорию data')
+            raise CommandError('Убедитесь, что файлы ingredients в папке data')

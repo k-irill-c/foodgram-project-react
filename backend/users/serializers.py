@@ -1,15 +1,13 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
+from recipes.models import Recipe
 from rest_framework import serializers
 
-from recipes.models import Recipe
 from .models import Follow, User
 
 
 class CustomUserSerializer(UserSerializer):
-    """
-    Сериализатор пользовательский.
-    get_is_subscribed показывает есть ли подписка.
-    """
+    """Сериализатор пользовательский."""
+
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -28,7 +26,6 @@ class CustomUserSerializer(UserSerializer):
         if not request or request.user.is_anonymous:
             return False
         return Follow.objects.filter(user=request.user, following=obj).exists()
-
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
