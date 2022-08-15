@@ -132,3 +132,37 @@ class RecipeViewSet(ModelViewSet):
         page.showPage()
         page.save()
         return response
+#    @action(detail=False, permission_classes=[IsAuthenticated])
+#    def download_shopping_cart(self, request):
+#        shopping_cart = {} 
+#        ingredients = IngredientAmount.objects.filter(
+#            recipe__carts__user=request.user).values(
+#            'ingredient__name', 'ingredient__measurement_unit', 'amount'
+#        )
+#        shopping_cart = '\n'.join([
+#            f'{ingredient["ingredient__name"]} - {ingredient["amount"]} '
+#            f'{ingredient["ingredient__measurement_unit"]}'
+#            for ingredient in ingredients
+#        ])
+#        for item in ingredients:
+#            name = item[0]
+#            if name not in shopping_cart:
+#                shopping_cart[name] = {
+#                    'measurement_unit': item[1],
+#                    'amount': item[2]
+#                }
+#                shopping_list = shopping_cart[name]
+#            else:
+#                shopping_cart[name]['amount'] += item[2]
+#                shopping_list = shopping_cart[name]['amount'] 
+        #shopping_cart = '\n'.join([
+        #    f'{ingredient["ingredient__name"]} - {ingredient["amount"]} '
+        #    f'{ingredient["ingredient__measurement_unit"]}'
+        #    for ingredient in ingredients
+        #])
+
+#        filename = 'shopping_list.txt'
+#        response = HttpResponse(shopping_list, content_type='text/plain')
+#        response['Content-Disposition'] = f'attachment; filename={filename}'
+#        return response
+
