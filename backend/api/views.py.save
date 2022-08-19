@@ -110,14 +110,12 @@ class RecipeViewSet(ModelViewSet):
             'ingredient__measurement_unit'
             ).annotate(sum_amount=Sum('amount'))
         for item in ingredients:
-#            name = item[0]
+            name = item[0]
             final_list.append(
                 '{} ({}) - {}'.format(
                     item[0],  # ['ingredient__name'],
                     item[1],  # ['ingredient__measurement_unit'],
                     item[2]))  # ['sum_amount'])) # <-------------
-
-
 #        for item in ingredients:
 #            name = item[0]
 #            if name not in final_list:
@@ -139,13 +137,10 @@ class RecipeViewSet(ModelViewSet):
         page.drawString(200, 800, 'Список покупок')
         page.setFont('Handicraft', size=16)
         height = 750
-        #for ingred  in enumerate(''.join(final_list), 1):
-#каша        for ingred  in final_list: 
-#каша            page.drawString(75, height, ingred)
-                                   #      f'{data["measurement_unit"]}'))
-        page.drawString(75, height, ''.join(final_list))
-
-        height -= 25
+        for i, (name, data) in enumerate(final_list[0].items(), 1): 
+            page.drawString(75, height, (f'{i}. {name} - {data["amount"]} '
+                                         f'{data["measurement_unit"]}'))
+            height -= 25
         page.showPage()
         page.save()
         return response
