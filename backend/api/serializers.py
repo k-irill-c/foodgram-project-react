@@ -1,23 +1,11 @@
-import webcolors
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
+
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
-from rest_framework import serializers
 from users.serializers import CustomUserSerializer
 
-
-class Hex2NameColor(serializers.Field):
-    """Сериализатор работы с HEX-кодом"""
-    def to_representation(self, value):
-        return value
-
-    def to_internal_value(self, data):
-        try:
-            data = webcolors.hex_to_name(data)
-        except ValueError:
-            raise serializers.ValidationError(
-                'Для этого цвета нет имени. Доступные: К.О.Ж.З.С.Ф.')
-        return data
+from .fields import Hex2NameColor
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -195,7 +183,7 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.tags.clear()
-        IngredientAmount.objects.filter(recipe=instance).all().delete()
+        IngredientAmount.objects.filter(recipe=instance).delete()
         self.create_tags(validated_data.pop('tags'), instance)
         self.create_ingredients(validated_data.pop('ingredients'), instance)
         return super().update(instance, validated_data)

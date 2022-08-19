@@ -1,8 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
-                            ShoppingCart, Tag)
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -11,6 +9,9 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+
+from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
+                            ShoppingCart, Tag)
 from users.pagination import BackendPagination
 
 from .filters import IngredientSearchFilter, RecipeFilter
@@ -107,16 +108,24 @@ class RecipeViewSet(ModelViewSet):
             'ingredient__name',
             'ingredient__measurement_unit',
             'amount'
-        )
-        for item in ingredients:
-            name = item[0]
-            if name not in final_list:
-                final_list[name] = {
-                    'measurement_unit': item[1],
-                    'amount': item[2]
-                }
-            else:
-                final_list[name]['amount'] += item[2]
+        ).annotate(sum_amount=sum('amount'))
+        for ingredient in ingredients:
+            final_list.append(
+                '{} ({}) - {}'.format(
+                    ingredient["ingredient__name"],
+                    ingredient["ingredient__measurement_unit"],
+                    ingredient["sum_amount"]
+                )
+            ) # <-------------
+#        for item in ingredients:
+#            name = item[0]
+#            if name not in final_list:
+#                final_list[name] = {
+#                    'measurement_unit': item[1],
+#                    'amount': item[2]
+#                }
+#            else:
+#                final_list[name]['amount'] += item[2]
         pdfmetrics.registerFont(
             TTFont('Handicraft', 'data/Handicraft.ttf', 'UTF-8'))
         response = HttpResponse(content_type='application/pdf')
