@@ -75,4 +75,4 @@ jobs:
           script: |
             sudo docker pull mistpy/foodgram_back:v1.1
             sudo docker-compose stop
-            sudo docker-compose rm backend
+            sudo docker-compose rm infra_backend_1
