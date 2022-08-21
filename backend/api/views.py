@@ -14,7 +14,6 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
 from users.pagination import BackendPagination
-
 from .filters import IngredientSearchFilter, RecipeFilter
 from .permissions import OwOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,

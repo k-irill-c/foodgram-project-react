@@ -4,7 +4,6 @@ from rest_framework import serializers
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
 from users.serializers import CustomUserSerializer
-
 from .fields import Hex2NameColor
 
 
