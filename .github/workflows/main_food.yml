@@ -54,4 +54,6 @@ jobs:
           context: ./backend
           push: true
           tags: mistpy/foodgram_back:v1.1
+          context: ./frontend
+          push: true
           tags: mistpy/foodgram_front:v1.1
