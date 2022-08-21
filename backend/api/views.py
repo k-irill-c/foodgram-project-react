@@ -51,6 +51,7 @@ class RecipeViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = RecipeFilter
     pagination_class = BackendPagination
+    serializer_class = RecipeListSerializer
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve'):
@@ -143,7 +144,7 @@ class RecipeViewSet(ModelViewSet):
 #каша        for ingred  in final_list: 
 #каша            page.drawString(75, height, ingred)
                                    #      f'{data["measurement_unit"]}'))
-        page.drawString(75, height, ''.join(final_list))
+        page.drawString(75, height, '   '.join(final_list))
 
         height -= 25
         page.showPage()
