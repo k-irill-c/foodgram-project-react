@@ -74,7 +74,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             sudo docker-compose stop
-            sudo docker-compose rm backend
+            sudo docker-compose rm back
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_back:v1.1
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
