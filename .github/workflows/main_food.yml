@@ -56,7 +56,7 @@ jobs:
           tags: mistpy/foodgram_back:v1.1
       - name: Push to Docker Hub 
         uses: docker/build-push-action@v2 
-        whith:
+        with:
           context: ./frontend
           push: true
           tags: mistpy/foodgram_front:v1.1
