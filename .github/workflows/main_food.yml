@@ -74,10 +74,13 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
+            sudo docker-compose stop --force
+            sudo docker container prune --force
+            sudo docker image prune -a --force
+            sudo docker volume prune --force
+            rm .env          
             sudo docker pull mistpy/foodgram_back:v1.1
             sudo docker pull mistpy/foodgram_front:v1.1
-            sudo docker-compose stop
-            rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
