@@ -138,7 +138,7 @@ docker-compose exec backend python manage.py load_ingredients
 
 ## Документация к API
 API документация доступна по ссылке (создана с помощью redoc):
-[http://51.250.91.241//api/docs/](http://51.250.91.241//api/docs/)
+[http://51.250.91.241//api/docs/](http://51.250.91.241/api/docs/)
 
 ## Примеры
 
