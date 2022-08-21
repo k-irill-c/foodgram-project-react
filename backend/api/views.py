@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -19,7 +20,6 @@ from .permissions import OwOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
                           RecipeAppendSerializer, RecipeListSerializer,
                           ShoppingCartSerializer, TagSerializer)
-from django.db.models import Sum
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
@@ -108,26 +108,13 @@ class RecipeViewSet(ModelViewSet):
         ingredients = IngredientAmount.objects.filter(
             recipe__carts__user=request.user).values_list(
             'ingredient__name',
-            'ingredient__measurement_unit'
-            ).annotate(sum_amount=Sum('amount'))
+            'ingredient__measurement_unit').annotate(sum_amount=Sum('amount'))
         for item in ingredients:
-#            name = item[0]
             final_list.append(
                 '{} ({}) - {}'.format(
-                    item[0],  # ['ingredient__name'],
-                    item[1],  # ['ingredient__measurement_unit'],
-                    item[2]))  # ['sum_amount'])) # <-------------
-
-
-#        for item in ingredients:
-#            name = item[0]
-#            if name not in final_list:
-#                final_list[name] = {
-#                    'measurement_unit': item[1],
-#                    'amount': item[2]
-#                }
-#            else:
-#                final_list[name]['amount'] += item[2]
+                    item[0],
+                    item[1],
+                    item[2]))
         pdfmetrics.registerFont(
             TTFont('Handicraft', 'data/Handicraft.ttf', 'UTF-8'))
         response = HttpResponse(content_type='application/pdf')
@@ -140,12 +127,7 @@ class RecipeViewSet(ModelViewSet):
         page.drawString(200, 800, 'Список покупок')
         page.setFont('Handicraft', size=16)
         height = 750
-        #for ingred  in enumerate(''.join(final_list), 1):
-#каша        for ingred  in final_list: 
-#каша            page.drawString(75, height, ingred)
-                                   #      f'{data["measurement_unit"]}'))
         page.drawString(75, height, '   '.join(final_list))
-
         height -= 25
         page.showPage()
         page.save()

@@ -51,30 +51,10 @@ class RecipeListSerializer(serializers.ModelSerializer):
     ingredients = IngredientAmountSerializer(many=True, source='amounts')
     is_favorited = serializers.SerializerMethodField(read_only=True)
     is_in_shopping_cart = serializers.SerializerMethodField(read_only=True)
-##    ingredients_amount = IngredientAmountSerializer(many=True)
 
     class Meta:
         model = Recipe
         fields = '__all__'
-#        fields = (
-#            'id',
-#            'name',
-#            'author',
-#            'ingredients',
-#            'tags',
-#            'text',
-#            'image',
-#            'cooking_time',
-#            'is_favorited',
-#            'is_in_shopping_cart',
-###            'ingredients_amount'
-#        )
-
-#    def get_ingredients(self, obj):
-#        queryset = IngredientAmount.objects.filter(recipe=obj)
-#        return IngredientAmountSerializer(queryset, many=True).data
-
-
 
     def get_is_favorited(self, obj):
         request = self.context.get('request')
@@ -160,31 +140,20 @@ class RecipeAppendSerializer(serializers.ModelSerializer):
             )
         return data
 
-#    @staticmethod
-#    def create_ingredients(ingredients, recipe):
-#        for ingredient in ingredients:
-#            IngredientAmount.objects.create(
-#                recipe=recipe, ingredient=ingredient['id'],
-#                amount=ingredient['amount']
-#            )
     @staticmethod
     def create_ingredients(ingredients, recipe):
-        
-        #  tags = validated_data.pop('tags')
-        #recipe = Recipe.objects.create(author=self.context.get('request').user, **validated_data)
-        #recipe.tags.set(tags)
+
         recipe.amounts.all().delete()
         new_ingredients = [
             IngredientAmount(
                 recipe=recipe,
-                ingredient = ingredient['id'],
-                amount = ingredient['amount'],
+                ingredient=ingredient['id'],
+                amount=ingredient['amount'],
             )
             for ingredient in ingredients
         ]
         IngredientAmount.objects.bulk_create(new_ingredients)
         return recipe
-
 
     @staticmethod
     def create_tags(tags, recipe):
