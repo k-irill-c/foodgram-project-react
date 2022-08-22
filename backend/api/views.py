@@ -126,8 +126,9 @@ class RecipeViewSet(ModelViewSet):
         page.drawString(200, 800, 'Список покупок')
         page.setFont('Handicraft', size=16)
         height = 750
-        page.drawString(75, height, '   '.join(final_list))
-        height -= 25
+        for line in final_list:
+            page.drawString(75, height, line)
+            height -= 25
         page.showPage()
         page.save()
         return response
